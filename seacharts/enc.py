@@ -22,12 +22,12 @@ class ENC:
     :param config: Config object or a valid path to a .yaml config file
     """
 
-    def __init__(self, config: Config | Path | str = None):
+    def __init__(self, config: Config | Path | str | None = None):
         self._config = config if isinstance(config, Config) else Config(config)
         self._environment = Environment(self._config.settings)
         self._display = None
 
-    def get_depth_at_coord(self, easting: int, northing: int) -> int:
+    def get_depth_at_coord(self, easting: float, northing: float) -> float | None:
         """
         Retrieves the seabed depth at a given coordinate.
 
@@ -105,25 +105,25 @@ class ENC:
         return self._environment.map.bathymetry
 
     @property
-    def size(self) -> tuple[int, int]:
+    def size(self) -> tuple[float, float]:
         """
         :return: tuple of ENC bounding box size
         """
-        return self._environment.scope.extent.size
+        return self._environment.scope.extent.size.to_tuple()
 
     @property
-    def origin(self) -> tuple[int, int]:
+    def origin(self) -> tuple[float, float]:
         """
         :return: tuple of ENC origin (lower left) coordinates.
         """
-        return self._environment.scope.extent.origin
+        return self._environment.scope.extent.origin.to_tuple()
 
     @property
-    def center(self) -> tuple[int, int]:
+    def center(self) -> tuple[float, float]:
         """
         :return: tuple of ENC center coordinates
         """
-        return self._environment.scope.extent.center
+        return self._environment.scope.extent.center.to_tuple()
 
     @property
     def bbox(self) -> tuple[int, int, int, int]:

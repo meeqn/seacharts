@@ -1,10 +1,12 @@
 """
 Contains utility functions related to system files and directories.
 """
-import csv, shutil
+import csv
 from collections.abc import Generator
 from pathlib import Path
+
 from seacharts.core.parser import DataParser
+
 from . import paths
 
 
@@ -37,7 +39,6 @@ def build_directory_structure(features: list[str], resources: list[str], parser:
     paths.shapefiles =  paths.shapefiles / map_dir_name
     paths.output.mkdir(exist_ok=True)
     paths.shapefiles.mkdir(exist_ok=True)
-    # shutil.copy(paths.config, paths.shapefiles) # used to save initial config
 
     for feature in features:
         shapefile_dir = paths.shapefiles / feature.lower()
