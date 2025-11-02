@@ -2,11 +2,6 @@ enc:
   required: True
   type: dict
   schema:
-    # TODO: might implement autosize functionality in later iterations
-    autosize:
-      required: False
-      type: boolean
-
     # Size of displayed map
     # Vertical, horizontal in degrees or UTM units
     size:
