@@ -61,6 +61,9 @@ class ENC:
         param_name = param_name.upper()
         if self.is_coord_in_layer(easting, northing, layer_name):
             layer: Layer = self._environment.get_layer_by_name(layer_name)
+            if layer is None:
+                _warnings.warn(f"Layer {layer_name} not found in ENC")
+                return None
             parameters: dict | None = layer.get_params_at_coord(easting, northing)
             if parameters is not None:
                 return parameters[param_name]
