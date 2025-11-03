@@ -6,17 +6,18 @@ import tkinter as tk
 from pathlib import Path
 from typing import Any
 
-from colorama import Fore
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import colors
-from matplotlib.widgets import Slider, RadioButtons
 from cartopy.crs import UTM
+from colorama import Fore
+from matplotlib import colors
 from matplotlib.gridspec import GridSpec
+from matplotlib.widgets import RadioButtons, Slider
 from matplotlib_scalebar.scalebar import ScaleBar
 
 import seacharts.environment as env
+
 from .colors import colorbar
 from .events import EventsManager
 from .features import FeaturesManager
@@ -68,7 +69,7 @@ class Display:
         """
         Sets bounding box for the display taking projection's (crs's) x and y limits for display into account.
         Making sure that bbox doesn't exceed limits prevents crashes. When such limit is exceeded, an appropriate message is displayed
-        to inform user about possibility of unexpeced display bound crop
+        to inform user about possibility of unexpected display bound crop
         """
         bbox = (max(environment.scope.extent.bbox[0], self.crs.x_limits[0]),  # x-min
                 max(environment.scope.extent.bbox[1], self.crs.y_limits[0]),  # y-min
@@ -79,13 +80,13 @@ class Display:
             if (bbox[i] != environment.scope.extent.bbox[i]):
                 changed.append(i)
         if len(changed)>0:
-            print(Fore.RED + f"WARNING: Bouding box for display has exceeded the limit of CRS axes and therefore been scaled down. Watch out for potentially cropped chart display!" + Fore.RESET)
+            print(Fore.RED + f"WARNING: Bounding box for display has exceeded the limit of CRS axes and therefore been scaled down. Watch out for potentially cropped chart display!" + Fore.RESET)
             for i in changed:
                 print(Fore.RED + f"index {i}: {environment.scope.extent.bbox[i]} changed to {bbox[i]}" + Fore.RESET)
         return bbox
 
     def start(self) -> None:
-        self.started__ = """
+        """
         Starts the display, if it is not already started.
         """
         if self._is_active:
@@ -246,7 +247,6 @@ class Display:
         draw_default = data is None
         for i in range(len(direction_data)):
             for j in range(len(direction_data[i])):
-                x = direction_data[i][j]
                 from math import isnan
                 if not isnan(direction_data[i][j]):
                     degree = math.radians(direction_data[i][j])
