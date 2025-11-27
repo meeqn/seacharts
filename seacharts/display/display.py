@@ -200,7 +200,6 @@ class Display:
                 else:
                     weather_layer = self._environment.weather.find_by_name(variable_name)
 
-        # TODO choose correct display for variables
         data = None
         if weather_layer is not None:
             data = [x[lon_indxes[0]:lon_indxes[1]] for x in
@@ -743,11 +742,11 @@ class Display:
 
     def add_control_panel(self, controls: bool):
         radio_labels = ['--'] + self._environment.weather.weather_names
-        if "wind_speed" and "wind_direction" in radio_labels:
+        if any(x in radio_labels for x in ["wind_speed", "wind_direction"]):
             radio_labels.append("wind")
-        if "wave_height" and "wave_direction" in radio_labels:
+        if any(x in radio_labels for x in ["wave_height", "wave_direction"]):
             radio_labels.append("wave")
-        if "sea_current_speed" and "sea_current_direction" in radio_labels:
+        if any(x in radio_labels for x in ["sea_current_speed", "sea_current_direction"]):
             radio_labels.append("sea_current")
         if not controls: return
         
@@ -780,9 +779,6 @@ class Display:
 
         self.radio_buttons.on_clicked(on_radio_change)
         # VISIBLE LAYER PICKER END
-
-        # TODO: layer picked in such way should be saved to variable
-        # then we can add, analogically to date slider, opacity slider for picked weather layer
 
         # Set the window title and show the figure
         fig.canvas.manager.set_window_title('Controls')
