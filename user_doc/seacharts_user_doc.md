@@ -52,8 +52,9 @@ If you need weather functionality:
 git clone https://github.com/SanityRemnants/PyThor
 cd PyThor
 conda create --name <envname> --file requirements.txt
-conda activate -n <envname>
-python app.py
+conda activate -n <envname> 
+python setup.py install
+python -m PyThor -a <addr> -p <port>
 ```
 
 ## Configuration Setup
@@ -142,13 +143,16 @@ display:
 ```
 
 ### PyThor Configuration
-For Copernicus marine data access (sea currents and tides), configure PyThor:
+For Copernicus marine data access (sea currents and tides), configure PyThor in pythor config file:
 
 ```yaml
 coppernicus_account:
   username: "your_username"    # Copernicus marine account username
   password: "your_password"    # Copernicus marine account password
-resolution: float             # Output data resolution in degrees
+resolution: float              # Output data resolution in degrees
+land_treshhold: float          # Treshhold used to determine where is the land after interpolation
+clear_cache: Boolean           # Whether to clear program cache after exit
+
 ```
 
 ## ENC Class for Maritime Spatial Data
