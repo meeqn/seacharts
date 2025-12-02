@@ -14,6 +14,8 @@ Python-based API for Electronic Navigational Charts (ENC)
 - Read and process spatial depth data from
   [FileGDB](https://gdal.org/drivers/vector/filegdb.html) files into
   shapefiles.
+- Read and process spatial depth data from [S-57](https://gdal.org/en/latest/drivers/vector/s57.html) files into shapefiles.
+- Visualize S-57 [layers](https://www.teledynecaris.com/s-57/frames/S57catalog.htm).
 - Access and manipulate standard geometric shapes such as points and polygon
   collections.
 - Visualize colorful seacharts features and vessels.
@@ -24,9 +26,9 @@ This module follows the [PEP8](https://www.python.org/dev/peps/pep-0008/)
 convention for Python code.
 
 
-## Prerequisites
+## Prerequisites - For SeaCharts 4.0 see [this](#seacharts-40-setup-tips) section
 
-### Linux (Virtual Environment)
+### DEPRECATED - Linux (Virtual Environment)
 
 First, ensure that you have the GDAL and GEOS libraries installed, as these are
 required in order to successfully install GDAL and Cartopy:
@@ -43,7 +45,7 @@ pip install -e .
 This should preferably be done inside a virtual environment in order to prevent
 Python packaging conflicts.
 
-### Anaconda
+### DEPRECATED - Anaconda
 
 Install an edition of the [Anaconda](
 https://www.anaconda.com/products/individual-d) package manager, and then create a new
@@ -63,7 +65,7 @@ conda install -c conda-forge fiona cartopy matplotlib
 conda install matplotlib-scalebar cerberys pyyaml
 ```
 
-### Windows (Pipwin)
+### DEPRECATED - Windows (Pipwin)
 
 First, ensure that [Python 3.11](https://www.python.org/downloads/) or higher
 is installed. Next, install all required packages using
@@ -103,13 +105,13 @@ or locally inside the SeaCharts root folder as an editable package with `pip ins
 
 ## Usage
 
-This module supports reading and processing `FGDB` files for sea depth data,
-such as the Norwegian coastal data set used for demonstration purposes, found
+This module supports reading and processing `FGDB` and 'S-57' files for sea depth data.
+
+### Downloading regional datasets - FGDB
+
+The Norwegian coastal data set used for demonstration purposes, found
 [here](
 https://kartkatalog.geonorge.no/metadata/2751aacf-5472-4850-a208-3532a51c529a).
-
-### Downloading regional datasets
-
 To visualize and access coastal data of Norway, follow the above link to download
 the `Depth data` (`Sjøkart - Dybdedata`) dataset from the [Norwegian Mapping Authority](
 https://kartkatalog.geonorge.no/?organization=Norwegian%20Mapping%20Authority) by adding
@@ -122,7 +124,7 @@ format. Finally, select your appropriate user group and purpose, and click
 
 ### Configuration and startup
 
-Unpack the downloaded file(s) and place the extracted `.gdb` in a suitable location,
+Unpack the downloaded file(s) and place the extracted `.gdb` or 'S-57' folder in a suitable location,
 in which the SeaCharts setup may be configured to search. The current
 working directory as well as the relative `data/` and `data/db/` folders are
 included by default.
@@ -141,7 +143,7 @@ if __name__ == '__main__':
     enc.display.show()
 ```
 
-The `config.yaml` file specifies which file paths to open and which area to load.
+The `config.yaml` file specifies which file paths to open and which area to load. In the configuration file the desired map type can be specified by listring data to display - depths for 'FDGB', and [layers](https://www.teledynecaris.com/s-57/frames/S57catalog.htm) for 'S-57'.
 The corresponding `config_schema.yaml` specifies how the required setup parameters
 must be provided, using `cerberus`.
 
@@ -173,7 +175,12 @@ Note how custom settings may be set in a user-defined .yaml-file, if its path is
 provided to the ENC during initialization. One may also import and create an
 instance of the `seacharts.Config` dataclass, and provide it directly to the ENC.
 
+### FGDB demonstration
 ![](images/example2.svg "Example visualization of vessels and a
+colorbar with depth values in light mode.")
+
+### S-57 demonstration
+![](images/example3.png "Example visualization of S-57 map with TSS layer and a
 colorbar with depth values in light mode.")
 
 ### Environment visualization
@@ -186,6 +193,24 @@ the various depth legends may be toggled using the `c` key. Images of the
 currently shown display may be saved in various resolutions by pressing
 Control + `s`, Shift + `s` or `s`.
 
+### SeaCharts 4.0 setup tips
+```
+Please be aware that these setup tips require setting up Conda environment.
+Possible support for pip installation will be resolved in the future.
+```
+
+This is a short to-do list that might come useful when setting up SeaCharts 4.0 for the first time:
+1. Set up conda environment as instructed in `conda_requirements.txt` file
+2. Use `setup.ps1` (WINDOWS ONLY) to setup directory structure needed by SeaCharts or manually create directories: `data`, `data/db` and `data/shapefiles`
+3. Download US1GC09M map via [this link](https://www.charts.noaa.gov/ENCs/US1GC09M.zip), and put the `US1GC09M` directory (found in ENC_ROOT directory) inside data/db folder.
+4. Run `test_seacharts_4_0.py` code either by pasting code into some main.py file in root of your project directory or by running it directly (needs fixing the issues with importing seacharts in the test file)
+5. After execution you can expect such image to be displayed:
+![](images/test_results.svg
+"Example visualization with vessels and geometric shapes in dark mode.")
+
+```
+For further experimentation options, look into files: `enc.py`, `config.yaml` and `config-schema.yaml` (for reference)
+```
 ## License
 
 This project uses the [MIT](https://choosealicense.com/licenses/mit/) license.
